@@ -59,17 +59,21 @@ All filters are ANDed. For broad searches, use fewer filters. Example combinatio
 
 ### Presenting results
 
-Present as a numbered list:
-```
-N. **Author et al. Year** — Title
-   Journal | doi: DOI
-   Tags: tag1, tag2, tag3
-   https://doi.org/DOI  (or https://arxiv.org/abs/EPRINT if no DOI)
-```
+Present results as a markdown table. Construct the link from entry fields: prefer `https://doi.org/{doi}`, fall back to `https://arxiv.org/abs/{eprint}`, then `{url}` if present.
 
-Construct the link from the entry fields: prefer `https://doi.org/{doi}`, fall back to `https://arxiv.org/abs/{eprint}`, then `{url}` if present. Always show the link on its own line so it renders as clickable in the terminal.
+**When reranked** (results have `rerank_score`), sort descending by score and use this format:
 
-Include total count at top. If results exceed limit, note "Showing N of M. Say 'show more' for the next page."
+| # | Score | Author | Year | Title | Journal | Link |
+|---|-------|--------|------|-------|---------|------|
+| 1 | 0.309 | Boi et al. | 2021 | Van Hove singularities... | Mat. Today Chem. | https://doi.org/... |
+
+**When not reranked**, omit the Score column:
+
+| # | Author | Year | Title | Journal | Link |
+|---|--------|------|-------|---------|------|
+| 1 | Kerelsky et al. | 2021 | Moiréless correlations... | PNAS | https://doi.org/... |
+
+Always show the full clickable HTTP link. Truncate long titles if needed (keep them readable). Include total count at top. If results exceed limit, note "Showing N of M. Say 'show more' for the next page."
 
 ### Drill-down
 
