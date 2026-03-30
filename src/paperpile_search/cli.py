@@ -44,7 +44,7 @@ def cmd_search(args):
         entries,
         text=args.text,
         author=args.author,
-        tag=args.tag,
+        tags=args.tag,
         folder=args.folder,
         year=args.year,
         limit=args.limit,
@@ -115,7 +115,7 @@ def main():
     p = sub.add_parser("search", help="Search library metadata")
     p.add_argument("--text", "-t", help="Free-text search (title, abstract, journal, author)")
     p.add_argument("--author", "-a", help="Author name")
-    p.add_argument("--tag", "-k", help="Paperpile tag/keyword")
+    p.add_argument("--tag", "-k", action="append", help="Paperpile tag/keyword (repeatable, ANDed)")
     p.add_argument("--folder", "-d", help="Paperpile folder name")
     p.add_argument("--year", "-y", help="Year or year range (e.g. 2020, 2018-2023)")
     p.add_argument("--limit", "-n", type=int, default=50, help="Max results (default 50)")

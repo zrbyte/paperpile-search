@@ -196,7 +196,7 @@ def search(
     *,
     text: str | None = None,
     author: str | None = None,
-    tag: str | None = None,
+    tags: list[str] | str | None = None,
     folder: str | None = None,
     year: str | None = None,
     limit: int = 50,
@@ -207,8 +207,11 @@ def search(
         results = [e for e in results if _matches_text(e, text)]
     if author:
         results = [e for e in results if _matches_author(e, author)]
-    if tag:
-        results = [e for e in results if _matches_tag(e, tag)]
+    if tags:
+        if isinstance(tags, str):
+            tags = [tags]
+        for tag in tags:
+            results = [e for e in results if _matches_tag(e, tag)]
     if folder:
         results = [e for e in results if _matches_folder(e, folder)]
     if year:
