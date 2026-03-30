@@ -22,6 +22,7 @@ paperpile-search search [options]    # search metadata (returns JSON)
   --tag "keyword"   / -k   # Paperpile tag/keyword (semicolon-separated in BibTeX)
   --folder "name"   / -d   # Paperpile folder
   --year "2023"     / -y   # year or range "2020-2024"
+  --rerank "query"  / -r   # rerank results by semantic similarity (sentence-transformers)
   --limit N         / -n   # max results (default 50)
   --compact         / -c   # compact JSON
 paperpile-search info <citekey>      # full metadata for one entry
@@ -46,7 +47,8 @@ When the user invokes `/paperpile` with no specific request:
 
 1. Parse the user's request to identify: text query, author, tags, year, folder
 2. Run `paperpile-search search` with the appropriate flags
-3. Parse the JSON output and present results
+3. If the user's query has a clear semantic intent (not just an author or tag lookup), add `--rerank "the user's query"` to rank results by relevance using sentence-transformers. The reranker scores against title + abstract.
+4. Parse the JSON output and present results. When reranked, include the `rerank_score` in output.
 
 ### Combining filters
 

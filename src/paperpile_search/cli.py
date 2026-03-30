@@ -15,6 +15,7 @@ from .library import (
     resolve_pdf_paths,
     search,
 )
+from .ranker import rerank
 
 
 def _json_out(data, compact: bool = False):
@@ -40,6 +41,9 @@ def cmd_status(args):
 
 def cmd_search(args):
     entries = load_library()
+    limit = args.limit
+    # When reranking, fetch more candidates so ranking is meaningful
+    search_limit = max(limit * 5, 200) if args.rerank else limit
     results = search(
         entries,
         text=args.text,
@@ -47,8 +51,11 @@ def cmd_search(args):
         tags=args.tag,
         folder=args.folder,
         year=args.year,
-        limit=args.limit,
+        limit=search_limit,
     )
+    if args.rerank and results:
+        results = rerank(results, args.rerank)
+        results = results[:limit]
     # Add resolved PDF paths
     for r in results:
         r["pdf_path"] = resolve_pdf_path(r)
@@ -119,6 +126,7 @@ def main():
     p.add_argument("--folder", "-d", help="Paperpile folder name")
     p.add_argument("--year", "-y", help="Year or year range (e.g. 2020, 2018-2023)")
     p.add_argument("--limit", "-n", type=int, default=50, help="Max results (default 50)")
+    p.add_argument("--rerank", "-r", help="Rerank results by semantic similarity to this query")
     p.add_argument("--compact", "-c", action="store_true", help="Compact JSON output")
     p.set_defaults(func=cmd_search)
 

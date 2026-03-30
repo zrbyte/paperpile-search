@@ -29,6 +29,9 @@ paperpile-search search --author "Castro Neto" --year 2009
 paperpile-search search --tag STM --tag graphene --year 2020-2025
 paperpile-search search --folder "ABC STM" --limit 10
 
+# Semantic reranking (uses sentence-transformers, scores against title + abstract)
+paperpile-search search --tag rhombohedral-graphite --rerank "superconductivity mechanisms"
+
 # Browse
 paperpile-search folders              # list folders with paper counts
 paperpile-search tags --limit 20      # list most-used tags
@@ -42,6 +45,12 @@ paperpile-search status
 ```
 
 All search flags are ANDed together. `--tag` can be repeated to require multiple tags. Output is JSON.
+
+## Semantic reranking
+
+The `--rerank` flag scores search results by cosine similarity between your query and each paper's title + abstract, using the `all-MiniLM-L6-v2` sentence transformer. This is useful when metadata filters return many results and you want the most semantically relevant ones at the top. Each result gets a `rerank_score` (0–1) in the JSON output.
+
+When reranking, the tool automatically widens the initial search (up to 5x the requested limit) before scoring and truncating, so you get the best matches even from a large candidate pool.
 
 ## How it works
 

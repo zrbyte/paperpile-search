@@ -9,6 +9,7 @@ description = "Search and query your Paperpile library from the command line"
 requires-python = ">=3.10"
 dependencies = [
     "bibtexparser>=2.0.0b7",
+    "sentence-transformers>=3.0",
 ]
 
 [project.scripts]
