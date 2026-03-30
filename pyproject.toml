@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paperpile-search"
+version = "0.1.0"
+description = "Search and query your Paperpile library from the command line"
+requires-python = ">=3.10"
+dependencies = [
+    "bibtexparser>=2.0.0b7",
+]
+
+[project.scripts]
+paperpile-search = "paperpile_search.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
